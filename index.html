@@ -1,12 +1,97 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Energy Conservation Simulator</title>
-  </head>
-  <body class="bg-slate-950">
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Energy Conservation Simulator | پایستگی انرژی مکانیکی</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Orbitron:wght@500;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="background-glow"></div>
+  <main class="app-shell">
+    <header class="topbar glass">
+      <div>
+        <h1>ENERGY CONSERVATION SIMULATOR</h1>
+        <p>پایستگی انرژی مکانیکی • Premium Physics Lab</p>
+      </div>
+      <div class="planet-group">
+        <label for="planetSelect">Planet Preset</label>
+        <select id="planetSelect">
+          <option value="earth">Earth (9.81 m/s²)</option>
+          <option value="moon">Moon (1.62 m/s²)</option>
+          <option value="mars">Mars (3.71 m/s²)</option>
+          <option value="jupiter">Jupiter (24.79 m/s²)</option>
+        </select>
+      </div>
+    </header>
+
+    <section class="dashboard">
+      <section class="panel glass sim-panel">
+        <div class="panel-header">
+          <h2>Mechanical Motion Chamber</h2>
+          <div class="badges"><span id="statusBadge">Paused</span><span id="fpsBadge">FPS: --</span></div>
+        </div>
+        <canvas id="simCanvas"></canvas>
+        <div class="energy-bars">
+          <div class="bar-item"><label>Potential</label><div class="bar"><span id="peBar"></span></div></div>
+          <div class="bar-item"><label>Kinetic</label><div class="bar"><span id="keBar"></span></div></div>
+          <div class="bar-item"><label>Mechanical</label><div class="bar"><span id="meBar"></span></div></div>
+        </div>
+      </section>
+
+      <section class="panel glass controls-panel">
+        <h2>Control Console</h2>
+        <div class="btn-grid">
+          <button id="startBtn">Start</button>
+          <button id="pauseBtn">Pause</button>
+          <button id="resetBtn">Reset</button>
+          <button id="replayBtn">Replay</button>
+          <button id="slowBtn">Slow Motion</button>
+        </div>
+
+        <div class="sliders">
+          <div class="control"><label>Mass (kg) <span id="massVal"></span></label><input id="mass" type="range" min="0.5" max="10" step="0.1" value="2" /></div>
+          <div class="control"><label>Gravity (m/s²) <span id="gravityVal"></span></label><input id="gravity" type="range" min="1" max="30" step="0.01" value="9.81" /></div>
+          <div class="control"><label>Friction μ <span id="frictionVal"></span></label><input id="friction" type="range" min="0" max="0.3" step="0.001" value="0.02" /></div>
+          <div class="control"><label>Ramp Angle (°) <span id="angleVal"></span></label><input id="angle" type="range" min="10" max="70" step="1" value="35" /></div>
+          <div class="control"><label>Initial Height (m) <span id="heightVal"></span></label><input id="height" type="range" min="1" max="20" step="0.1" value="10" /></div>
+          <div class="control"><label>Initial Velocity (m/s) <span id="velocityVal"></span></label><input id="velocity" type="range" min="0" max="20" step="0.1" value="0" /></div>
+        </div>
+      </section>
+
+      <section class="panel glass analytics-panel">
+        <h2>Live Energy Analytics</h2>
+        <canvas id="energyChart"></canvas>
+        <div class="stats-grid">
+          <article><h3>Velocity</h3><p id="velRead">0.00 m/s</p></article>
+          <article><h3>Height</h3><p id="heightRead">0.00 m</p></article>
+          <article><h3>PE</h3><p id="peRead">0.00 J</p></article>
+          <article><h3>KE</h3><p id="keRead">0.00 J</p></article>
+          <article><h3>ME</h3><p id="meRead">0.00 J</p></article>
+          <article><h3>Friction Loss</h3><p id="lossRead">0.00 J</p></article>
+        </div>
+      </section>
+    </section>
+
+    <section class="panel glass edu-panel">
+      <h2>Physics Notes & Formulas</h2>
+      <div class="formula-grid">
+        <article title="Potential energy due to vertical position"><h3>Potential</h3><p>PE = mgh</p></article>
+        <article title="Energy due to motion"><h3>Kinetic</h3><p>KE = ½mv²</p></article>
+        <article title="Total mechanical energy"><h3>Mechanical</h3><p>ME = PE + KE</p></article>
+      </div>
+      <ul>
+        <li>Without friction (μ = 0), ME remains almost constant (small numerical drift only).</li>
+        <li>With friction, energy decreases as heat loss along the track.</li>
+        <li>Delta-time integration ensures smooth real-time behavior across frame rates.</li>
+      </ul>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
 </html>
